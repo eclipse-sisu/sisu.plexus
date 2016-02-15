@@ -179,7 +179,7 @@ public final class DefaultPlexusContainer
         variables = new ContextMapAdapter( context );
 
         containerRealm = lookupContainerRealm( configuration );
-        classRealmManager = new ClassRealmManager( this, qualifiedBeanLocator );
+        classRealmManager = new ClassRealmManager( qualifiedBeanLocator );
         containerRealm.getWorld().addListener( classRealmManager );
 
         componentVisibility = configuration.getComponentVisibility();
@@ -448,7 +448,7 @@ public final class DefaultPlexusContainer
                 {
                     beanModules.add( new ComponentDescriptorBeanModule( space, descriptors ) );
                 }
-                if ( !classRealmManager.isManaged( realm ) )
+                if ( containerRealm != realm && !classRealmManager.isManaged( realm ) )
                 {
                     beanModules.add( new PlexusXmlBeanModule( space, variables ) );
                     final BeanScanning local = BeanScanning.GLOBAL_INDEX == scanning ? BeanScanning.INDEX : scanning;

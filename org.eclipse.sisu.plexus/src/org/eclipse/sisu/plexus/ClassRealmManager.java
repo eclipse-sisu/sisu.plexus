@@ -13,12 +13,10 @@ package org.eclipse.sisu.plexus;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorldListener;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.eclipse.sisu.inject.MutableBeanLocator;
@@ -65,11 +63,9 @@ public final class ClassRealmManager
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final Map<ClassRealm, Set<String>> visibility = Weak.concurrentKeys();
+    private static final ConcurrentMap<ClassRealm, Set<String>> visibility = Weak.concurrentKeys();
 
     private final ConcurrentMap<ClassRealm, Injector> injectors = new ConcurrentHashMap<ClassRealm, Injector>();
-
-    private final MutablePlexusContainer plexusContainer;
 
     private final MutableBeanLocator beanLocator;
 
@@ -77,9 +73,8 @@ public final class ClassRealmManager
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ClassRealmManager( final MutablePlexusContainer plexusContainer, final MutableBeanLocator beanLocator )
+    public ClassRealmManager( final MutableBeanLocator beanLocator )
     {
-        this.plexusContainer = plexusContainer;
         this.beanLocator = beanLocator;
     }
 
@@ -115,7 +110,7 @@ public final class ClassRealmManager
             Set<String> names = visibility.get( contextRealm );
             if ( null == names )
             {
-                visibility.put( contextRealm, names = computeVisibleNames( contextRealm ) );
+                visibility.putIfAbsent( contextRealm, names = computeVisibleNames( contextRealm ) );
             }
             return names;
         }
@@ -127,7 +122,7 @@ public final class ClassRealmManager
      */
     public boolean isManaged( final ClassRealm realm )
     {
-        return injectors.containsKey( realm ) || realm == plexusContainer.getContainerRealm();
+        return injectors.containsKey( realm );
     }
 
     /**
