@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.sisu</groupId>
   <artifactId>sisu-plexus</artifactId>
-  <version>0.3.3</version>
+  <version>0.3.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Sisu Plexus</name>
