@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import javax.inject.Provider;
 
@@ -110,11 +110,14 @@ public final class DefaultPlexusContainer
 
     private static final Module[] NO_CUSTOM_MODULES = {};
 
+    static final AtomicIntegerFieldUpdater<DefaultPlexusContainer> PLEXUS_RANK_UPDATER =
+        AtomicIntegerFieldUpdater.newUpdater( DefaultPlexusContainer.class, "plexusRank" );
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    final AtomicInteger plexusRank = new AtomicInteger();
+    volatile int plexusRank;
 
     final Map<ClassRealm, List<ComponentDescriptor<?>>> descriptorMap =
         new IdentityHashMap<ClassRealm, List<ComponentDescriptor<?>>>();
@@ -354,7 +357,7 @@ public final class DefaultPlexusContainer
                     binder.bind( (Class) role ).annotatedWith( Names.named( hint ) ).toInstance( component );
                 }
             }
-        } ), new DefaultRankingFunction( plexusRank.incrementAndGet() ) ) );
+        } ), new DefaultRankingFunction( PLEXUS_RANK_UPDATER.incrementAndGet( this ) ) ) );
     }
 
     public <T> void addComponentDescriptor( final ComponentDescriptor<T> descriptor )
@@ -858,7 +861,7 @@ public final class DefaultPlexusContainer
 
             // allow plugins to override the default ranking function so we can support component profiles
             final Key<RankingFunction> plexusRankingKey = Key.get( RankingFunction.class, Names.named( "plexus" ) );
-            binder.bind( plexusRankingKey ).toInstance( new DefaultRankingFunction( plexusRank.incrementAndGet() ) );
+            binder.bind( plexusRankingKey ).toInstance( new DefaultRankingFunction( PLEXUS_RANK_UPDATER.incrementAndGet( DefaultPlexusContainer.this ) ) );
             binder.bind( RankingFunction.class ).to( plexusRankingKey );
 
             binder.install( dateConverter );
