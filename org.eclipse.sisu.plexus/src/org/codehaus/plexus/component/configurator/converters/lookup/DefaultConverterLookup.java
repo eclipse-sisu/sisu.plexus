@@ -28,6 +28,7 @@ import org.codehaus.plexus.component.configurator.converters.basic.FileConverter
 import org.codehaus.plexus.component.configurator.converters.basic.FloatConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.IntConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.LongConverter;
+import org.codehaus.plexus.component.configurator.converters.basic.PathConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.ShortConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.StringBufferConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.StringBuilderConverter;
@@ -49,6 +50,7 @@ public final class DefaultConverterLookup
     private static final ConfigurationConverter[] DEFAULT_CONVERTERS = {
         // optimized ordering...
         new FileConverter(), //
+        new PathConverter(), //
         new BooleanConverter(), //
         new StringConverter(), //
         new IntConverter(), //
