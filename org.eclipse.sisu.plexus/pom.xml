@@ -23,72 +23,7 @@
   <artifactId>org.eclipse.sisu.plexus</artifactId>
   <packaging>eclipse-plugin</packaging>
 
-  <dependencies>
-    <!--
-     | Sisu is compatible with Guice 3.0+
-    -->
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>4.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <!--
-     | @PostConstruct and @PreDestroy help with Plexus->JSR330 migration
-    -->
-    <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <version>1.2</version>
-    </dependency>
-    <!--
-     | CDI's @Typed helps with Plexus->JSR330 migration
-    -->
-    <dependency>
-      <groupId>javax.enterprise</groupId>
-      <artifactId>cdi-api</artifactId>
-      <version>1.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.el</groupId>
-          <artifactId>javax.el-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.interceptor</groupId>
-          <artifactId>javax.interceptor-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.sisu</groupId>
-      <artifactId>org.eclipse.sisu.inject</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <!--
-     | Plexus classloading/utilities
-    -->
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-component-annotations</artifactId>
-      <version>2.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-classworlds</artifactId>
-      <version>2.6.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>3.3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
-      <optional>true</optional>
-    </dependency>
-  </dependencies>
+  <!-- all dependencies set in the build.target -->
 
   <build>
     <sourceDirectory>src</sourceDirectory>
