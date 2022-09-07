@@ -40,7 +40,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>4.13.2</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -182,7 +182,7 @@
           <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
           <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <argLine>-Xmx64m @{jacoco.argLine}</argLine>
+          <argLine>-Xmx64m --add-opens java.base/java.lang=ALL-UNNAMED @{jacoco.argLine}</argLine>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>com.google.guava:guava</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject:guice</classpathDependencyExclude>
