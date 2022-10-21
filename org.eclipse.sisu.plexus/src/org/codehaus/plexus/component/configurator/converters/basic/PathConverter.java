@@ -30,7 +30,8 @@ public class PathConverter
     public Object fromString( final String value )
         throws ComponentConfigurationException
     {
-        return Paths.get( value );
+        // defer creation of actual Path to fromConfiguration(...)
+        return value;
     }
 
     @Override
@@ -42,12 +43,19 @@ public class PathConverter
         final Object result =
             super.fromConfiguration( lookup, configuration, type, enclosingType, loader, evaluator, listener );
 
-        if ( result instanceof Path )
+        if ( result instanceof String )
         {
-            // relative paths are are given relative to base directory (not necessarily the working directory)
-            // therefore make them absolute via ExpressionEvaluator.alignToBaseDirectory(...)
-            File path = ( ( Path ) result).toFile();
-            return evaluator.alignToBaseDirectory( path ).toPath();
+            // this always assumes the default filesystem
+            Path path = Paths.get( (String)result );
+            if ( !path.isAbsolute() )
+            {
+                // relative paths are are given relative to base directory (not necessarily the working directory)
+                // therefore make them absolute via ExpressionEvaluator.alignToBaseDirectory(...)
+                Path baseDirectory = evaluator.alignToBaseDirectory( new File("") ).toPath();
+                // this uses the filesystem of the base directory
+                path = baseDirectory.resolve( (String)result );
+            }
+            return path;
         }
         else
         {
