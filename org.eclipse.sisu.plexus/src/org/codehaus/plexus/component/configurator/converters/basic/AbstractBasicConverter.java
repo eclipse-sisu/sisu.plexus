@@ -70,7 +70,7 @@ public abstract class AbstractBasicConverter
                                            final Class<?> type )
         throws ComponentConfigurationException
     {
-        String value = configuration.getValue();
+        String value = configuration.getValue( configuration.getAttribute( "default-value" ) );
         try
         {
             Object result = null;
@@ -83,21 +83,6 @@ public abstract class AbstractBasicConverter
                 else
                 {
                     result = evaluator.evaluate( value );
-                }
-            }
-            if ( null == result )
-            {
-                value = configuration.getAttribute( "default-value" );
-                if ( null != value && value.length() > 0 )
-                {
-                    if ( evaluator instanceof TypeAwareExpressionEvaluator )
-                    {
-                        result = ( (TypeAwareExpressionEvaluator) evaluator ).evaluate( value, type );
-                    }
-                    else
-                    {
-                        result = evaluator.evaluate( value );
-                    }
                 }
             }
             return result;

@@ -7,8 +7,12 @@
 package org.eclipse.sisu.plexus;
 
 import java.io.File;
+import java.net.URI;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Map;
 
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
@@ -38,7 +42,7 @@ public class BasicComponentConfiguratorTest
     }
 
     @Test
-    public void testBasicPathConverters()
+    public void testBasicPathConverterWithSimplePathOnDefaultFileSystem()
         throws ComponentConfigurationException
     {
         PathTestComponent component = new PathTestComponent();
@@ -47,9 +51,46 @@ public class BasicComponentConfiguratorTest
                    "absoluteFile", absolutePath.toString() );
         // path must be converted to absolute one
         assertEquals( tmpDirectory.getRoot().toPath().resolve( "readme.txt" ), component.path );
+        assertEquals( FileSystems.getDefault(), component.path.getFileSystem() );
         assertEquals( absolutePath, component.absolutePath );
         assertEquals( new File( tmpDirectory.getRoot(), "readme.txt" ), component.file );
         assertEquals( absolutePath.toFile(), component.absoluteFile );
+    }
+
+    @Test
+    public void testBasicPathConverterWithComplexPathOnZipFileSystem()
+        throws ComponentConfigurationException
+    {
+        PathTestComponent component = new PathTestComponent();
+        final DefaultPlexusConfiguration config = new DefaultPlexusConfiguration( "testConfig" );
+        // test with ZIP File System
+        // use non-existing file
+        File zipFile = new File( tmpDirectory.getRoot(), "example-zip-file4.zip" );
+        URI fileSystemUri = URI.create("jar:file:" + zipFile.toString());
+        // create file through provider
+        Map<String, String> properties = Collections.singletonMap( "create", "true" );
+        addComplexConfigurationForPath( config, "path", fileSystemUri, properties, "my/file" );
+        configure( component, config );
+        // path must be converted to absolute one
+        Path actualPath = component.path;
+        assertEquals( "jar", actualPath.getFileSystem().provider().getScheme() );
+        assertEquals( "my/file", actualPath.toString() );
+    }
+
+    private void addComplexConfigurationForPath( DefaultPlexusConfiguration configuration, String name, URI uri, Map<String, String> properties, String path )
+    {
+        PlexusConfiguration pathConfiguration = new DefaultPlexusConfiguration( name );
+        pathConfiguration.addChild( "filesystem-uri", uri.toString() );
+        if ( properties != null )
+        {
+            PlexusConfiguration propertiesConfig =  pathConfiguration.getChild( "filesystem-properties" );
+            for ( Map.Entry<String, String> property : properties.entrySet() )
+            {
+                propertiesConfig.addChild( property.getKey(), property.getValue() );
+            }
+        }
+        pathConfiguration.addChild( "path", path );
+        configuration.addChild( pathConfiguration );
     }
 
     private void configure( Object component, String... keysAndValues )
