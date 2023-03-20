@@ -1,0 +1,12 @@
+Bundle-Name: Sisu-Plexus (Incubation)
+Bundle-SymbolicName: org.eclipse.sisu.plexus;singleton:=true
+Export-Package: org.eclipse.sisu.plexus,\
+org.codehaus.plexus.*
+Import-Package: javax.inject,\
+ org.eclipse.sisu.*;version="!",\
+ com.google.inject.*;version="1.4",\
+ org.osgi.framework;version="1.5",\
+ org.codehaus.classworlds;version="!",\
+ org.codehaus.plexus.component.annotations;resolution:=optional;version="!"
+ org.codehaus.plexus.*,;version="!",\
+ *;resolution:=optional;version="!"
