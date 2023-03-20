@@ -61,8 +61,6 @@
   <modules>
     <module>org.eclipse.sisu.plexus</module>
     <module>org.eclipse.sisu.plexus.extender</module>
-    <module>org.eclipse.sisu.plexus.tests</module>
-    <module>org.eclipse.sisu.plexus.site</module>
   </modules>
 
   <scm>
@@ -87,110 +85,11 @@
 
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
-
-    <tycho.scmUrl>scm:git:https://github.com/eclipse/sisu.plexus.git</tycho.scmUrl>
-    <tycho-version>2.7.5</tycho-version>
   </properties>
 
   <build>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>target-platform-configuration</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <executionEnvironment>JavaSE-1.8</executionEnvironment>
-            <target>
-              <artifact>
-                <groupId>org.eclipse.sisu</groupId>
-                <artifactId>org.eclipse.sisu.plexus</artifactId>
-                <version>${project.version}</version>
-                <classifier>build</classifier>
-              </artifact>
-            </target>
-            <environments>
-              <environment>
-                <os>win32</os>
-                <ws>win32</ws>
-                <arch>x86</arch>
-              </environment>
-              <environment>
-                <os>linux</os>
-                <ws>gtk</ws>
-                <arch>x86_64</arch>
-              </environment>
-              <environment>
-                <os>macosx</os>
-                <ws>cocoa</ws>
-                <arch>x86_64</arch>
-              </environment>
-            </environments>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-compiler-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-maven-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-p2-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-p2-publisher-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-p2-repository-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-packaging-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <archive>
-              <addMavenDescriptor>false</addMavenDescriptor>
-            </archive>
-            <sourceReferences>
-              <generate>true</generate>
-            </sourceReferences>
-          </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>org.eclipse.tycho.extras</groupId>
-              <artifactId>tycho-sourceref-jgit</artifactId>
-              <version>${tycho-version}</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-source-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <executions>
-            <execution>
-              <id>plugin-source</id>
-              <goals>
-                <goal>plugin-source</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-surefire-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
         <plugin>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>3.1.0</version>
@@ -276,6 +175,27 @@
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.12.1</version>
+        </plugin>
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-maven-plugin</artifactId>
+          <version>6.4.0</version>
+          <configuration>
+            <bnd><![CDATA[
+Bundle-Copyright: Copyright (c) 2010-present Sonatype, Inc. and others
+Bundle-DocURL: http://www.eclipse.org/sisu/
+-noextraheaders: true
+-snapshot: SNAPSHOT
+            ]]></bnd>
+          </configuration>
+          <executions>
+            <execution>
+              <id>bnd-process</id>
+              <goals>
+                <goal>bnd-process</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
