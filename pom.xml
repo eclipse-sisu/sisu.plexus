@@ -85,6 +85,9 @@
     <maven.compiler.source>1.${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>1.${maven.compiler.release}</maven.compiler.target>
 
+    <mavenBuildVersion>3.6.3</mavenBuildVersion>
+    <javaBuildVersion>11</javaBuildVersion>
+
     <tycho.scmUrl>scm:git:https://github.com/eclipse/sisu.plexus.git</tycho.scmUrl>
     <tycho-version>2.7.5</tycho-version>
   </properties>
@@ -308,12 +311,12 @@
                     <exclude>org.apache.felix:org.apache.felix.framework:jar:7.0.5</exclude>
                   </excludes>
                 </enforceBytecodeVersion>
-                <requireJavaVersion>
-                  <version>11</version>
-                </requireJavaVersion>
-                <requireMavenVersion>
-                  <version>3.8.4</version>
-                </requireMavenVersion>
+              <requireMavenVersion>
+                <version>${mavenBuildVersion}</version>
+              </requireMavenVersion>
+              <requireJavaVersion>
+                <version>${javaBuildVersion}</version>
+              </requireJavaVersion>
               </rules>
             </configuration>
           </execution>
