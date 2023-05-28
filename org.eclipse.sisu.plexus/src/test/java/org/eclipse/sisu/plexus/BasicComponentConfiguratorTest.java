@@ -34,24 +34,21 @@ import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEv
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BasicComponentConfiguratorTest
 {
-    @Rule
-    public TemporaryFolder tmpDirectory = new TemporaryFolder();
+    @TempDir
+    public File tmpDirectory;
 
     private ComponentConfigurator configurator;
 
-    @Before
-    public void setUp()
+    @BeforeEach
+    protected void setUp()
     {
         configurator = new BasicComponentConfigurator();
     }
@@ -65,10 +62,10 @@ public class BasicComponentConfiguratorTest
         configure( component, "path", "readme.txt", "absolutePath", absolutePath.toString(), "file", "readme.txt",
                    "absoluteFile", absolutePath.toString() );
         // path must be converted to absolute one
-        assertEquals( tmpDirectory.getRoot().toPath().resolve( "readme.txt" ), component.path );
+        assertEquals( tmpDirectory.toPath().resolve( "readme.txt" ), component.path );
         assertEquals( FileSystems.getDefault(), component.path.getFileSystem() );
         assertEquals( absolutePath, component.absolutePath );
-        assertEquals( new File( tmpDirectory.getRoot(), "readme.txt" ), component.file );
+        assertEquals( new File( tmpDirectory, "readme.txt" ), component.file );
         assertEquals( absolutePath.toFile(), component.absoluteFile );
     }
 
@@ -147,8 +144,8 @@ public class BasicComponentConfiguratorTest
                    new ClassWorld( "foo", Thread.currentThread().getContextClassLoader() ).getClassRealm( "foo" ) );
 
         assertEquals( complexBean.resources.size(), 2 );
-        assertTrue( complexBean.resources.toString(), complexBean.resources.contains( Resource.newResource( "foo" ) ) );
-        assertTrue( complexBean.resources.toString(), complexBean.resources.contains( Resource.newResource( "bar" ) ) );
+        assertTrue( complexBean.resources.contains( Resource.newResource( "foo" ) ), complexBean.resources.toString() );
+        assertTrue( complexBean.resources.contains( Resource.newResource( "bar" ) ), complexBean.resources.toString() );
     }
 
     private void configure( Object component, String... keysAndValues )
@@ -182,7 +179,7 @@ public class BasicComponentConfiguratorTest
             {
                 if ( !path.isAbsolute() )
                 {
-                    return new File( tmpDirectory.getRoot(), path.getPath() );
+                    return new File( tmpDirectory, path.getPath() );
                 }
                 else
                 {
@@ -300,3 +297,4 @@ public class BasicComponentConfiguratorTest
         }
     }
 }
+
