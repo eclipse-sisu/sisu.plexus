@@ -48,8 +48,14 @@ public class PropertiesConverter
                 final PlexusConfiguration element = configuration.getChild( i );
                 if ( element.getChildCount() > 0 )
                 {
-                    final Object name = fromExpression( element.getChild( "name" ), evaluator );
-                    setProperty( properties, name, element.getChild( "value" ), evaluator );
+                    final PlexusConfiguration nameElement = element.getChild( "name" );
+                    final PlexusConfiguration valueElement = element.getChild( "value" );
+                    // Ignore elements that don't have both name and value
+                    if ( null != nameElement && null != valueElement )
+                    {
+                        final Object name = fromExpression( nameElement, evaluator );
+                        setProperty( properties, name, valueElement, evaluator );
+                    }
                 }
                 else
                 {
@@ -88,15 +94,8 @@ public class PropertiesConverter
                               final ExpressionEvaluator evaluator )
         throws ComponentConfigurationException
     {
-        final String key = null != name ? name.toString() : null;
-        if ( null != key )
-        {
-            final Object value = fromExpression( valueConfiguration, evaluator );
-            properties.setProperty( key, null != value ? value.toString() : "" );
-        }
-        else
-        {
-            throw new ComponentConfigurationException( "Missing name in properties" );
-        }
+        final String key = name.toString();
+        final Object value = fromExpression( valueConfiguration, evaluator );
+        properties.setProperty( key, null != value ? value.toString() : "" );
     }
 }
