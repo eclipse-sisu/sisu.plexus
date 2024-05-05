@@ -281,10 +281,10 @@ public final class CompositeBeanHelper
                             return m;
                         }
                     }
-                    paramTypeHolder[0] = paramTypes[0];
                     // backward compat we keep returning the first method found
                     if(candidate == null)
                     {
+                        paramTypeHolder[0] = paramTypes[0];
                         candidate = m;
                     }
                 }
