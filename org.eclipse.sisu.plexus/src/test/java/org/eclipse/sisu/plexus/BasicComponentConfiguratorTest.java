@@ -131,11 +131,11 @@ public class BasicComponentConfiguratorTest
 
     @Test
     public void testConfigureComplexBean()
-            throws Exception
+        throws Exception
     {
-        ComplexBean complexBean  = new ComplexBean();
+        ComplexBean complexBean = new ComplexBean();
 
-        //configure( complexBean, "resources", "foo;bar" );
+        // configure( complexBean, "resources", "foo;bar" );
         DefaultPlexusConfiguration config = new DefaultPlexusConfiguration( "testConfig" );
 
         DefaultPlexusConfiguration child = new DefaultPlexusConfiguration( "resources", "foo;bar" );
@@ -143,7 +143,8 @@ public class BasicComponentConfiguratorTest
 
         config.addChild( child );
 
-        configure( complexBean, config, new ClassWorld("foo", Thread.currentThread().getContextClassLoader()).getClassRealm("foo") );
+        configure( complexBean, config,
+                   new ClassWorld( "foo", Thread.currentThread().getContextClassLoader() ).getClassRealm( "foo" ) );
 
         assertEquals( complexBean.resources.size(), 2 );
         assertTrue( complexBean.resources.toString(), complexBean.resources.contains( Resource.newResource( "foo" ) ) );
@@ -172,7 +173,7 @@ public class BasicComponentConfiguratorTest
     }
 
     private void configure( Object component, PlexusConfiguration config, ClassRealm loader )
-            throws ComponentConfigurationException
+        throws ComponentConfigurationException
     {
         final ExpressionEvaluator evaluator = new DefaultExpressionEvaluator()
         {
@@ -250,16 +251,15 @@ public class BasicComponentConfiguratorTest
     {
         private List<Resource> resources;
 
-        public void setResources(List<Resource> resources)
+        public void setResources( List<Resource> resources )
         {
             this.resources = resources;
         }
 
-        public void setResources(String resources)
+        public void setResources( String resources )
         {
-            this.resources = Arrays.stream(resources.split(";"))
-                    .map(Resource::newResource)
-                    .collect(Collectors.toList());
+            this.resources =
+                Arrays.stream( resources.split( ";" ) ).map( Resource::newResource ).collect( Collectors.toList() );
         }
 
     }
@@ -268,29 +268,35 @@ public class BasicComponentConfiguratorTest
     {
         String path;
 
-        static Resource newResource(String path)
+        static Resource newResource( String path )
         {
-            return new BaseResource(path);
+            return new BaseResource( path );
         }
 
-        static class BaseResource extends Resource
+        static class BaseResource
+            extends Resource
         {
-            public BaseResource(String path) {
+            public BaseResource( String path )
+            {
                 this.path = path;
             }
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals( Object o )
+        {
+            if ( this == o )
+                return true;
+            if ( o == null || getClass() != o.getClass() )
+                return false;
             Resource resource = (Resource) o;
-            return Objects.equals(path, resource.path);
+            return Objects.equals( path, resource.path );
         }
 
         @Override
-        public int hashCode() {
-            return Objects.hashCode(path);
+        public int hashCode()
+        {
+            return Objects.hashCode( path );
         }
     }
 }

@@ -264,7 +264,9 @@ public final class CompositeBeanHelper
                                             listener );
     }
 
-    private Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName, final Class<?> valueType ) {
+    private Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName,
+                               final Class<?> valueType )
+    {
         Method candidate = null;
         for ( final Method m : beanType.getMethods() )
         {
@@ -275,14 +277,14 @@ public final class CompositeBeanHelper
                 {
                     if ( valueType != null )
                     {
-                        if(m.getParameters()[0].getType().isAssignableFrom(valueType))
+                        if ( m.getParameters()[0].getType().isAssignableFrom( valueType ) )
                         {
                             paramTypeHolder[0] = paramTypes[0];
                             return m;
                         }
                     }
                     // backward compat we keep returning the first method found
-                    if(candidate == null)
+                    if ( candidate == null )
                     {
                         paramTypeHolder[0] = paramTypes[0];
                         candidate = m;
