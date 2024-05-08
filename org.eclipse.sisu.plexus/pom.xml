@@ -204,7 +204,7 @@
                 <artifactItem>
                   <groupId>com.google.guava</groupId>
                   <artifactId>failureaccess</artifactId>
-                  <version>1.0.1</version>
+                  <version>1.0.2</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.guava</groupId>
@@ -232,7 +232,7 @@
                 <artifactItem>
                   <groupId>com.google.guava</groupId>
                   <artifactId>failureaccess</artifactId>
-                  <version>1.0.1</version>
+                  <version>1.0.2</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.guava</groupId>
@@ -270,7 +270,7 @@
                 <artifactItem>
                   <groupId>com.google.guava</groupId>
                   <artifactId>failureaccess</artifactId>
-                  <version>1.0.1</version>
+                  <version>1.0.2</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.guava</groupId>
