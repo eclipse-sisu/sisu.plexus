@@ -762,14 +762,31 @@ public class MyPluginModule
 }
 </pre>
                 <div class="alert alert-info">
-                    <p>Maven Class Loading mechanism does not expose the Guice API to build plugins, but only to core extensions.</p>
-                    <p>So you can only define custom bindings in core extensions. </p>
-                    <p>Note that extensions does not have access to the API by default, you need to expose it yourself using the `extension.xml` config file. See the example [here](https://maven.apache.org/ref/3.9.0/maven-core/core-extensions.html) for more details.</p>
+                    <p>Note that Maven Class Loading mechanism does not expose the Guice API to build plugins by default, you need to expose it yourself using the `extension.xml` config file. </p>
                 </div>
+
+                <p>Put the following file <b>extensions.xml</b> in your <b>/META-INF/maven/</b> folder</p>
+
+                <pre class="prettyprint lang-xml">
+&lt;extension&gt;
+    &lt;exportedPackages&gt;
+        &lt;exportedPackage&gt;com.google.inject.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.binder.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.matcher.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.name.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.spi.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.util.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.internal.*&lt;/exportedPackage&gt;
+    &lt;/exportedPackages&gt;
+&lt;/extension&gt;</pre>
+
+
+                <p>See the documentation <a href="https://maven.apache.org/ref/3.9.0/maven-core/core-extensions.html">here</a> for more details.</p>
+
 
                 <div class="alert alert-danger">
                     <p>Even if you define custom Guice modules in your build plugins by adding the classes in your Classpath, they will not be picked up by maven due to the separation of Classpaths.</p>
-                    <p>If you want to read more about maven class loader, see documentation [here](https://maven.apache.org/guides/mini/guide-maven-classloading.html#Core_Classloader)</p>
+                    <p>If you want to read more about maven class loader, see documentation <a href="https://maven.apache.org/guides/mini/guide-maven-classloading.html#Core_Classloader">here</a>.</p>
                 </div>
 
             </section>
