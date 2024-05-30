@@ -1,3 +1,5 @@
+**This repository has been merged into [sisu-project](https://github.com/eclipse-sisu/sisu.inject).**
+
 ```
 +-----------+---+-----------+---+---+
 |           |   |           |   |   |
